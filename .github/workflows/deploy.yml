@@ -36,10 +36,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          # No package-lock.json committed (kept the dependency surface lean);
+          # `npm install` is fine — no lockfile means no cache benefit anyway.
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build static export
         run: npm run build
