@@ -1,0 +1,64 @@
+# Deploy Next.js static export to GitHub Pages on every push to main.
+#
+# This is GitHub's modern Pages workflow — replaces the older gh-pages branch
+# approach. Uses GitHub's official actions:
+#   actions/configure-pages    — auto-detects Next.js + sets correct env vars
+#   actions/upload-pages-artifact — packages /out for Pages
+#   actions/deploy-pages       — atomic deploy to Pages
+#
+# After first run: Settings → Pages → Source = "GitHub Actions"
+# (one-time manual step in the GitHub UI)
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deploy, but don't cancel in-progress runs
+# (we want the current deploy to finish before starting a new one)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
