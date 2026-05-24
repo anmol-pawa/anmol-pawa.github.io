@@ -1,41 +1,53 @@
-"use client";
-
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { StatCard } from "@/components/ui/stat-card";
+import { ERDiagram } from "@/components/viz/er-diagram";
 import { ABOUT_PARAGRAPHS, STATS } from "@/lib/content";
 
+/**
+ * About — left column reads the prose; right column shows the self-portrait
+ * as an ER diagram (engineers as the PK root, three FK satellites). Stats grid
+ * sits below to bridge into the experience section.
+ */
 export function About() {
   return (
-    <Section id="about" index="01" eyebrow="Who I am" title="Engineering systems that" titleAccent="scale.">
-      <div className="grid gap-12 md:grid-cols-[1.4fr_1fr]">
-        {/* Narrative */}
-        <div className="space-y-5">
+    <Section
+      id="about"
+      eyebrow="\\d+ engineers"
+      title={<>I model myself as a relational schema.</>}
+      subtitle="Database engineer first, software engineer always. Production systems thinking translates directly across stacks."
+    >
+      <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start lg:gap-14">
+        <Reveal className="space-y-5">
           {ABOUT_PARAGRAPHS.map((p, i) => (
-            <Reveal key={i} delay={i * 0.08}>
-              <p className="text-slate-300 leading-relaxed">{p}</p>
-            </Reveal>
+            <p
+              key={i}
+              className="text-[1.02rem] leading-relaxed text-[color:var(--color-text-2)]"
+            >
+              {p}
+            </p>
           ))}
-        </div>
+        </Reveal>
 
-        {/* Stats grid */}
-        <Reveal delay={0.2}>
-          <div className="grid grid-cols-2 gap-3">
-            {STATS.map((s) => (
-              <div
-                key={s.label}
-                className="card group flex flex-col gap-1 p-5"
-              >
-                <div className="font-display text-2xl font-bold text-cyan-400 transition-transform group-hover:scale-105 md:text-3xl">
-                  {s.value}
-                </div>
-                <div className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-slate-500">
-                  {s.label}
-                </div>
-              </div>
-            ))}
+        <Reveal delay={0.1}>
+          <div className="card overflow-hidden p-5">
+            <div className="mb-2 font-mono text-[0.7rem] uppercase tracking-widest text-[color:var(--color-muted-2)]">
+              \d+ engineer · schema
+            </div>
+            <div className="aspect-[640/460] w-full">
+              <ERDiagram />
+            </div>
           </div>
         </Reveal>
       </div>
+
+      <Reveal delay={0.2}>
+        <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {STATS.map((s, i) => (
+            <StatCard key={i} stat={s} />
+          ))}
+        </div>
+      </Reveal>
     </Section>
   );
 }

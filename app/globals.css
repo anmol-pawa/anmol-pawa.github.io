@@ -1,29 +1,42 @@
 @import "tailwindcss";
 
-/* ── Theme variables (Tailwind v4 uses @theme directive) ───────────────────── */
+/* ── Theme tokens (Tailwind v4 @theme) ────────────────────────────────────── */
 @theme {
+  /* Surfaces — Postgres-console dark, layered */
   --color-bg:        #050810;
-  --color-surface:   #0d111c;
-  --color-elevated:  #131826;
+  --color-surface:   #0a0f1c;
+  --color-elevated:  #11182a;
+  --color-overlay:   #161d2f;
   --color-border:    #1f2a3f;
-  --color-accent:    #22d3ee;
-  --color-accent-2:  #a855f7;
-  --color-accent-3:  #34d399;
+  --color-border-2:  #2a3754;
+
+  /* Accents — pg-cyan primary; secondary/data/ops follow project accents */
+  --color-pg:        #22d3ee;   /* postgres-cyan, primary */
+  --color-pg-soft:   #67e8f9;
+  --color-violet:    #a855f7;   /* agent / ML */
+  --color-emerald:   #34d399;   /* data / success */
+  --color-amber:     #fbbf24;   /* compute / ops */
+  --color-orange:    #fb923c;   /* serverless / aws */
+  --color-rose:      #f472b6;   /* gfx / wgl */
+
+  /* Text */
   --color-text:      #e2e8f0;
+  --color-text-2:    #cbd5e1;
   --color-muted:     #64748b;
+  --color-muted-2:   #94a3b8;
   --color-white:     #f8fafc;
 
+  /* Type */
   --font-display:    "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono:       "JetBrains Mono", ui-monospace, monospace;
+  --font-mono:       "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-/* ── Reset + base ──────────────────────────────────────────────────────────── */
+/* ── Reset + base ─────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
-  /* offset for sticky nav */
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -32,30 +45,31 @@ body {
   font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "cv11", "ss01";    /* Inter stylistic refinements */
+  font-feature-settings: "cv11", "ss01", "ss03";
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.32);
   color: var(--color-white);
 }
 
-/* ── Subtle ambient grid (entire page background) ─────────────────────────── */
+/* ── Ambient grid (subtle, fades from top) ────────────────────────────────── */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px);
   background-size: 56px 56px;
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 80%);
+  mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 85%);
 }
 
-/* Two soft floating glows in the background — fixed, animate slowly */
+/* Soft drifting glows (two corners) */
 body::after {
   content: "";
   position: fixed;
@@ -63,60 +77,146 @@ body::after {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.10) 0%, transparent 35%),
-    radial-gradient(circle at 85% 60%, rgba(34, 211, 238, 0.08) 0%, transparent 35%);
+    radial-gradient(circle at 18% 22%, rgba(168, 85, 247, 0.10) 0%, transparent 38%),
+    radial-gradient(circle at 82% 62%, rgba(34, 211, 238, 0.08) 0%, transparent 38%);
 }
 
-/* ── Scrollbar ─────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 8px; }
+/* ── Scrollbar (Postgres-cyan tint) ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(34, 211, 238, 0.2);
+  background: rgba(34, 211, 238, 0.22);
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.4); }
+::-webkit-scrollbar-thumb:hover { background: rgba(34, 211, 238, 0.44); }
 
 /* ── Reusable utility classes ─────────────────────────────────────────────── */
 
-/* Subtle text-fill gradient for headlines */
+/* Heading gradient text */
 .text-gradient {
-  background: linear-gradient(135deg, #f8fafc 0%, #22d3ee 50%, #a855f7 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #22d3ee 55%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Section heading micro-label */
+/* Eyebrow above section headings */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.25em;
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-pg);
 }
 .eyebrow::before {
   content: "";
   width: 24px;
   height: 1px;
-  background: var(--color-accent);
+  background: linear-gradient(90deg, transparent, var(--color-pg));
+}
+.eyebrow::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-pg);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
 }
 
-/* Accent border on hover */
+/* Card surface */
 .card {
   position: relative;
-  background: var(--color-surface);
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-elevated) 100%);
   border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  border-radius: 0.85rem;
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card:hover {
-  border-color: rgba(34, 211, 238, 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 24px 48px -16px rgba(34, 211, 238, 0.18);
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 24px 60px -20px rgba(34, 211, 238, 0.20);
 }
+
+/* Terminal-style frame (used by mono-blocks) */
+.terminal {
+  background: #060912;
+  border: 1px solid var(--color-border);
+  border-radius: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.65;
+  overflow: hidden;
+}
+.terminal-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.85rem;
+  background: var(--color-elevated);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-muted-2);
+  letter-spacing: 0.06em;
+}
+.terminal-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: var(--color-border-2);
+}
+
+/* Caret (used in hero) */
+.caret {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1em;
+  background: var(--color-pg);
+  vertical-align: text-bottom;
+  margin-left: 0.15ch;
+  animation: caret 1.05s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+
+/* Stack pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 0.4rem;
+  background: rgba(34, 211, 238, 0.05);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  color: var(--color-text-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Stat hero number */
+.stat-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.85rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--color-white) 0%, var(--color-pg-soft) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* SQL syntax tokens (used by hero query) */
+.sql-kw   { color: #ff7b72; }
+.sql-id   { color: var(--color-text); }
+.sql-tbl  { color: var(--color-pg-soft); }
+.sql-str  { color: #a5d6ff; }
+.sql-num  { color: #79c0ff; }
+.sql-op   { color: #ffa657; }
+.sql-com  { color: var(--color-muted); }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
