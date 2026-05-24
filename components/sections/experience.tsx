@@ -10,9 +10,9 @@ export function Experience() {
     <Section id="experience" eyebrow="Where I've worked" title="Work" titleAccent="Experience">
       <div className="relative pl-7 md:pl-10">
         {/* Vertical timeline line */}
-        <div className="absolute left-2 top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400 via-purple-500 to-transparent" />
+        <div className="absolute bottom-2 left-2 top-2 w-px bg-gradient-to-b from-cyan-400 via-purple-500 to-transparent" />
 
-        <div className="space-y-12">
+        <div className="space-y-14">
           {EXPERIENCE.map((exp, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <div className="relative">
@@ -22,19 +22,19 @@ export function Experience() {
                   <div className="relative h-3 w-3 rounded-full bg-cyan-400 shadow-[0_0_14px_rgba(34,211,238,0.7)]" />
                 </div>
 
-                <div className="card p-6 md:p-8">
+                <div className="card p-7 md:p-9">
                   {/* Header row */}
-                  <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
+                  <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
                     <h3 className="font-display text-lg font-semibold text-white md:text-xl">
                       {exp.role}
                     </h3>
-                    <span className="rounded-md border border-cyan-400/20 bg-cyan-400/5 px-2.5 py-1 font-mono text-[0.7rem] tracking-wider text-cyan-400">
+                    <span className="rounded-md border border-cyan-400/20 bg-cyan-400/5 px-3 py-1 font-mono text-[0.72rem] tracking-wider text-cyan-400">
                       {exp.period}
                     </span>
                   </div>
 
                   {/* Company */}
-                  <div className="mb-5 flex items-center gap-2 font-mono text-sm text-slate-400">
+                  <div className="mb-7 flex items-center gap-2.5 font-mono text-sm text-slate-400">
                     <Briefcase className="h-3.5 w-3.5 text-purple-400" />
                     {exp.company}
                     <span className="text-slate-600">·</span>
@@ -42,21 +42,21 @@ export function Experience() {
                   </div>
 
                   {/* Bullets */}
-                  <ul className="mb-5 space-y-2.5">
+                  <ul className="mb-7 space-y-3.5">
                     {exp.bullets.map((b, j) => (
-                      <li key={j} className="flex gap-3 text-sm text-slate-300 leading-relaxed">
-                        <span className="mt-2 inline-block h-px w-3 flex-shrink-0 bg-cyan-400/60" />
+                      <li key={j} className="flex gap-4 text-sm leading-relaxed text-slate-300">
+                        <span className="mt-2.5 inline-block h-px w-3 flex-shrink-0 bg-cyan-400/60" />
                         <span>{b}</span>
                       </li>
                     ))}
                   </ul>
 
-                  {/* Stack tags */}
-                  <div className="flex flex-wrap gap-1.5">
+                  {/* Stack tags — generous spacing */}
+                  <div className="flex flex-wrap gap-2">
                     {exp.stack.map((s) => (
                       <span
                         key={s}
-                        className="rounded-md border border-purple-500/20 bg-purple-500/[0.07] px-2 py-0.5 font-mono text-[0.7rem] text-purple-300"
+                        className="rounded-md border border-purple-500/20 bg-purple-500/[0.07] px-2.5 py-1 font-mono text-[0.7rem] text-purple-300"
                       >
                         {s}
                       </span>
