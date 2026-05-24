@@ -17,6 +17,7 @@ export function Contact() {
   return (
     <Section
       id="contact"
+      index="06"
       eyebrow="Let's talk"
       title="Get in"
       titleAccent="Touch"

@@ -9,6 +9,7 @@ export function Portfolio() {
   return (
     <Section
       id="portfolio"
+      index="04"
       eyebrow="Proof of SWE breadth"
       title="Personal"
       titleAccent="Portfolio"

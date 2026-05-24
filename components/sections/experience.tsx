@@ -7,7 +7,7 @@ import { Briefcase } from "lucide-react";
 
 export function Experience() {
   return (
-    <Section id="experience" eyebrow="Where I've worked" title="Work" titleAccent="Experience">
+    <Section id="experience" index="02" eyebrow="Where I've worked" title="Work" titleAccent="Experience">
       <div className="relative pl-7 md:pl-10">
         {/* Vertical timeline line */}
         <div className="absolute bottom-2 left-2 top-2 w-px bg-gradient-to-b from-cyan-400 via-purple-500 to-transparent" />

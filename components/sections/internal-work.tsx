@@ -9,6 +9,7 @@ export function InternalWork() {
   return (
     <Section
       id="internal-work"
+      index="03"
       eyebrow="Production at TI"
       title="Internal"
       titleAccent="Systems"

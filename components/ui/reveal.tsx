@@ -4,13 +4,20 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
 
 /**
- * <Reveal> — opacity+translateY entry animation when scrolled into view.
- * Honors prefers-reduced-motion.
+ * <Reveal> — slow, cinematic scroll-triggered entry.
+ *
+ *   - ease-out-expo curve [0.16, 1, 0.3, 1] for a premium decel
+ *   - 0.8s duration (slow enough to feel deliberate, not nervous)
+ *   - 32px initial Y offset for visible motion
+ *   - viewport margin -50px so things start animating as soon as they
+ *     crest the fold (not after they're fully on-screen)
+ *
+ * Honors prefers-reduced-motion via useReducedMotion.
  */
 export function Reveal({
   children,
   delay = 0,
-  y = 24,
+  y = 32,
   className = "",
 }: {
   children: ReactNode;
@@ -23,8 +30,12 @@ export function Reveal({
     <motion.div
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        duration: 0.8,
+        delay,
+        ease: [0.16, 1, 0.3, 1],
+      }}
       className={className}
     >
       {children}

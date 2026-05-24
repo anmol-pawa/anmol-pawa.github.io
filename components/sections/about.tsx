@@ -6,7 +6,7 @@ import { ABOUT_PARAGRAPHS, STATS } from "@/lib/content";
 
 export function About() {
   return (
-    <Section id="about" eyebrow="Who I am" title="Engineering systems that" titleAccent="scale.">
+    <Section id="about" index="01" eyebrow="Who I am" title="Engineering systems that" titleAccent="scale.">
       <div className="grid gap-12 md:grid-cols-[1.4fr_1fr]">
         {/* Narrative */}
         <div className="space-y-5">

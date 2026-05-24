@@ -36,7 +36,7 @@ const ICONS: Record<string, LucideIcon> = {
  */
 export function Skills() {
   return (
-    <Section id="skills" eyebrow="What I use" title="Tech" titleAccent="Stack">
+    <Section id="skills" index="05" eyebrow="What I use" title="Tech" titleAccent="Stack">
       <div className="grid gap-5 md:grid-cols-2 md:gap-6">
         {SKILLS.map((cat, i) => {
           const Icon = ICONS[cat.icon] ?? Code;
