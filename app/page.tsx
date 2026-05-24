@@ -8,18 +8,25 @@ import { Skills } from "@/components/sections/skills";
 import { Contact } from "@/components/sections/contact";
 import { Footer } from "@/components/sections/footer";
 
+/**
+ * Single-page composition. Order is intentional — hero hooks, then proof
+ * (about → experience → production), then portfolio (the centerpiece), then
+ * the toolchain (skills), then contact.
+ */
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <>
       <Nav />
-      <Hero />
-      <About />
-      <Experience />
-      <InternalWork />
-      <Portfolio />
-      <Skills />
-      <Contact />
+      <main className="relative min-h-screen overflow-hidden">
+        <Hero />
+        <About />
+        <Experience />
+        <InternalWork />
+        <Portfolio />
+        <Skills />
+        <Contact />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
