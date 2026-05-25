@@ -29,8 +29,10 @@ export function BTreeIndex({ categories }: BTreeIndexProps) {
         <RootNode active={!!active} />
       </div>
 
-      {/* spokes */}
-      <div className="relative" aria-hidden>
+      {/* spokes — decorative fan lines from the root to categories. Only meaningful
+          when the category grid is multi-column; hide on mobile (1-col) where the
+          spokes would point at empty space. */}
+      <div className="relative hidden sm:block" aria-hidden>
         <svg
           viewBox="0 0 1200 80"
           preserveAspectRatio="none"
@@ -54,11 +56,12 @@ export function BTreeIndex({ categories }: BTreeIndexProps) {
         </svg>
       </div>
 
-      {/* category nodes */}
-      <div
-        className="grid gap-3"
-        style={{ gridTemplateColumns: `repeat(${Math.min(categories.length, 4)}, minmax(0, 1fr))` }}
-      >
+      {/*
+        Category nodes. Responsive grid: 1 col on phones, 2 on small tablets,
+        3 on lg, 4 on xl. Hardcoding to 4 cols broke mobile (each card was
+        ~60px wide and unreadable).
+      */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {categories.map((c, i) => {
           const catActive = active?.cat === c.code;
           return (
