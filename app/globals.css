@@ -31,8 +31,17 @@
   --font-mono:       "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 
-/* ── Reset + base ─────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+/*
+ * Tailwind v4's preflight (shipped via `@import "tailwindcss"` above) already
+ * sets box-sizing on everything, zeroes margins, and resets list/heading styles.
+ *
+ * We do NOT redeclare a `* { margin: 0; padding: 0 }` reset here — Tailwind's
+ * utilities live in `@layer utilities`, and per CSS Cascade Layers spec any
+ * UNLAYERED `*` rule would defeat every `py-*`, `p-*`, `m-*` Tailwind class
+ * regardless of selector specificity. That bug ate every section's padding
+ * before this fix landed.
+ */
 
 html {
   scroll-behavior: smooth;
